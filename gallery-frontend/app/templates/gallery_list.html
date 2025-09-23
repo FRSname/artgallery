@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Gallery{% endblock %}
+{% block content %}
+<h1>Gallery</h1>
+<form method="get" class="search">
+  <div><label>Query</label>
+    <input name="q" value="{{ filters.q }}" placeholder="ID (A0001), title, keywords"></div>
+  <div><label>Year from</label><input name="year_from" value="{{ filters.year_from }}"></div>
+  <div><label>Year to</label><input name="year_to" value="{{ filters.year_to }}"></div>
+  <button class="btn" type="submit">Search</button>
+  <a class="btn secondary" href="/gallery">Reset</a>
+</form>
+<div class="grid">
+  {% for a in artworks %}
+  <a class="card" href="/gallery/{{ a.artwork_id }}">
+    {% if a.primary_image %}
+      <img class="thumb" src="/media/{{ a.primary_image.replace('/media/','') }}" alt="{{ a.title }}">
+    {% else %}
+      <div class="thumb" style="display:grid;place-items:center;color:#3d4a5f">No image</div>
+    {% endif %}
+    <div class="card-body">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <strong>{{ a.title }}</strong><span class="muted small">({{ a.artwork_id }})</span>
+        {% if a.year %}<span class="badge">{{ a.year }}</span>{% endif %}
+      </div>
+      <div class="muted">{{ a.medium }}</div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

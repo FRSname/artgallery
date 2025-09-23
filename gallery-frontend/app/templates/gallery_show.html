@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ artwork.title }} – Gallery{% endblock %}
+{% block content %}
+<div class="actions">
+  <a class="btn" href="/gallery">← Back</a>
+</div>
+<h1>{{ artwork.title }}</h1>
+<div class="muted">ID: {{ artwork.artwork_id }} · {{ artwork.artist_name }} · {{ artwork.year }}</div>
+{% if artwork.primary_image %}
+  <img class="hero-img" src="/media/{{ artwork.primary_image.replace('/media/','') }}" alt="{{ artwork.title }}">
+{% endif %}
+<div class="kv">
+  <div>Medium</div><div>{{ artwork.medium }}</div>
+  <div>Surface</div><div>{{ artwork.surface }}</div>
+  <div>Size (cm)</div><div>{{ artwork.width_cm }} × {{ artwork.height_cm }} × {{ artwork.depth_cm }}</div>
+  <div>Keywords</div><div>{{ artwork.keywords }}</div>
+</div>
+{% if artwork.description %}
+  <h2>Description</h2>
+  <p class="muted">{{ artwork.description }}</p>
+{% endif %}
+{% endblock %}

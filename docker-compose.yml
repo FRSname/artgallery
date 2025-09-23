@@ -1,0 +1,11 @@
+services:
+  gallery-frontend:
+    build: ./gallery-frontend
+    container_name: gallery-frontend
+    environment:
+      - BACKEND_BASE=http://192.168.88.103:9000
+      - API_KEY=supersecret123
+      - TZ=Europe/Prague
+    ports:
+      - "9900:8000"
+    restart: unless-stopped
