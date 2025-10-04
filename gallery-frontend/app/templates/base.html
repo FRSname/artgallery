@@ -3,16 +3,43 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="{% block description %}Explore our curated collection of artworks{% endblock %}" />
   <title>{% block title %}Gallery{% endblock %}</title>
   <link rel="stylesheet" href="/static/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  {% block extra_head %}{% endblock %}
 </head>
 <body>
-  <header class="header"><div class="header-inner">
-    <a class="brand" href="/gallery"><span class="dot"></span> Gallery</a>
-  </div></header>
+  <header class="header">
+    <div class="header-inner">
+      <a class="brand" href="/gallery">
+        <span class="dot"></span> 
+        <span>Gallery</span>
+      </a>
+      <nav class="nav">
+        <a href="/gallery" class="nav-link">Browse</a>
+        <a href="/api/stats" class="nav-link">Stats</a>
+      </nav>
+    </div>
+  </header>
+  
   <main class="container">
     {% block content %}{% endblock %}
-    <div class="footer muted">© Gallery</div>
+    
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <p class="muted">© 2025 Gallery. All rights reserved.</p>
+        </div>
+        <div class="footer-section">
+          <a href="#" class="footer-link">About</a>
+          <a href="#" class="footer-link">Contact</a>
+        </div>
+      </div>
+    </footer>
   </main>
+
+  {% block extra_scripts %}{% endblock %}
 </body>
 </html>

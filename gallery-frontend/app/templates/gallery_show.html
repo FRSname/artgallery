@@ -1,22 +1,181 @@
 {% extends "base.html" %}
 {% block title %}{{ artwork.title }} – Gallery{% endblock %}
+{% block description %}{{ artwork.description[:160] if artwork.description else artwork.title }}{% endblock %}
+
 {% block content %}
-<div class="actions">
-  <a class="btn" href="/gallery">← Back</a>
+<div class="artwork-page">
+  <!-- Navigation -->
+  <div class="actions">
+    <a class="btn btn-secondary" href="/gallery">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Back to Gallery
+    </a>
+    <button class="btn btn-secondary" onclick="shareArtwork()" title="Share">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/>
+      </svg>
+      Share
+    </button>
+  </div>
+
+  <!-- Artwork Header -->
+  <header class="artwork-header">
+    <h1 class="artwork-title">{{ artwork.title }}</h1>
+    <div class="artwork-subtitle muted">
+      <span>{{ artwork.artwork_id }}</span>
+      {% if artwork.artist_name %}
+      <span>•</span>
+      <span>{{ artwork.artist_name }}</span>
+      {% endif %}
+      {% if artwork.year %}
+      <span>•</span>
+      <span>{{ artwork.year }}</span>
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- Main Image -->
+  {% if artwork.primary_image %}
+  <div class="artwork-image-container">
+    <img 
+      class="artwork-image" 
+      src="/media/{{ artwork.primary_image.replace('/media/','') }}" 
+      alt="{{ artwork.title }}"
+      onclick="openImageModal(this.src)"
+      style="cursor: zoom-in;"
+    >
+    <p class="image-caption muted small">Click image to view full size</p>
+  </div>
+  {% else %}
+  <div class="artwork-placeholder">
+    <svg width="96" height="96" fill="none" stroke="currentColor" stroke-width="1">
+      <rect x="12" y="12" width="72" height="72" rx="4"/>
+      <circle cx="36" cy="36" r="8"/>
+      <path d="m12 84 24-24 16 16 24-24"/>
+    </svg>
+    <p class="muted">No image available</p>
+  </div>
+  {% endif %}
+
+  <!-- Artwork Details Grid -->
+  <section class="artwork-details">
+    <h2>Details</h2>
+    <div class="details-grid">
+      {% if artwork.medium %}
+      <div class="detail-item">
+        <div class="detail-label muted">Medium</div>
+        <div class="detail-value">{{ artwork.medium }}</div>
+      </div>
+      {% endif %}
+
+      {% if artwork.surface %}
+      <div class="detail-item">
+        <div class="detail-label muted">Surface</div>
+        <div class="detail-value">{{ artwork.surface }}</div>
+      </div>
+      {% endif %}
+
+      {% if artwork.width_cm or artwork.height_cm or artwork.depth_cm %}
+      <div class="detail-item">
+        <div class="detail-label muted">Dimensions (cm)</div>
+        <div class="detail-value">
+          {% if artwork.width_cm %}{{ artwork.width_cm }}{% endif %}
+          {% if artwork.width_cm and artwork.height_cm %} × {% endif %}
+          {% if artwork.height_cm %}{{ artwork.height_cm }}{% endif %}
+          {% if artwork.depth_cm and (artwork.width_cm or artwork.height_cm) %} × {% endif %}
+          {% if artwork.depth_cm %}{{ artwork.depth_cm }}{% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if artwork.keywords %}
+      <div class="detail-item detail-item-full">
+        <div class="detail-label muted">Keywords</div>
+        <div class="detail-value">
+          {% for keyword in artwork.keywords.split(',') %}
+          <span class="keyword-tag">{{ keyword.strip() }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Description -->
+  {% if artwork.description %}
+  <section class="artwork-description">
+    <h2>About this Artwork</h2>
+    <p class="description-text">{{ artwork.description }}</p>
+  </section>
+  {% endif %}
+
+  <!-- Additional Images (if available) -->
+  {% if artwork.images and artwork.images|length > 1 %}
+  <section class="artwork-gallery">
+    <h2>Additional Images</h2>
+    <div class="image-grid">
+      {% for img in artwork.images[1:] %}
+      <img 
+        src="/media/{{ img.replace('/media/','') }}" 
+        alt="{{ artwork.title }} - Image {{ loop.index + 1 }}"
+        onclick="openImageModal(this.src)"
+        style="cursor: zoom-in;"
+      >
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
 </div>
-<h1>{{ artwork.title }}</h1>
-<div class="muted">ID: {{ artwork.artwork_id }} · {{ artwork.artist_name }} · {{ artwork.year }}</div>
-{% if artwork.primary_image %}
-  <img class="hero-img" src="/media/{{ artwork.primary_image.replace('/media/','') }}" alt="{{ artwork.title }}">
-{% endif %}
-<div class="kv">
-  <div>Medium</div><div>{{ artwork.medium }}</div>
-  <div>Surface</div><div>{{ artwork.surface }}</div>
-  <div>Size (cm)</div><div>{{ artwork.width_cm }} × {{ artwork.height_cm }} × {{ artwork.depth_cm }}</div>
-  <div>Keywords</div><div>{{ artwork.keywords }}</div>
+
+<!-- Image Modal -->
+<div id="imageModal" class="modal" onclick="closeImageModal()">
+  <span class="modal-close">&times;</span>
+  <img class="modal-content" id="modalImage">
 </div>
-{% if artwork.description %}
-  <h2>Description</h2>
-  <p class="muted">{{ artwork.description }}</p>
-{% endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Image modal functionality
+function openImageModal(src) {
+  const modal = document.getElementById('imageModal');
+  const modalImg = document.getElementById('modalImage');
+  modal.style.display = 'flex';
+  modalImg.src = src;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+  const modal = document.getElementById('imageModal');
+  modal.style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+
+// Escape key to close modal
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeImageModal();
+  }
+});
+
+// Share functionality
+function shareArtwork() {
+  const title = '{{ artwork.title }}';
+  const url = window.location.href;
+  
+  if (navigator.share) {
+    navigator.share({
+      title: title,
+      url: url
+    }).catch(err => console.log('Error sharing:', err));
+  } else {
+    // Fallback: copy to clipboard
+    navigator.clipboard.writeText(url).then(() => {
+      alert('Link copied to clipboard!');
+    });
+  }
+}
+</script>
 {% endblock %}
