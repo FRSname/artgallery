@@ -1,91 +1,95 @@
 {% extends "base.html" %}
-{% block title %}About Vladislav Raszyk - Gallery{% endblock %}
-{% block description %}Learn about the life and work of painter Vladislav Raszyk (1936-2025), a distinguished Czech artist from Český Těšín.{% endblock %}
+{% block title %}O malíři Vladislavu Raszykovi - Galerie{% endblock %}
+{% block description %}Poznejte život a dílo malíře Vladislava Raszyka (1936-2025), významného českého umělce z Českého Těšína.{% endblock %}
 
 {% block content %}
 <div class="about-page">
   <div class="page-header">
     <h1>Vladislav Raszyk</h1>
-    <p class="subtitle muted">1936 - 2025 | Český Těšín</p>
+    <p class="subtitle muted">14. 9. 1936 - 7. 7. 2025 | Český Těšín</p>
+  </div>
+
+  <!-- Artist Portrait -->
+  <div class="artist-portrait">
+    <img src="/static/portrait.jpg" alt="Vladislav Raszyk" class="portrait-image">
+    <p class="portrait-caption muted">Akademický malíř Vladislav Raszyk</p>
   </div>
 
   <div class="about-content">
     <section class="about-section">
-      <h2>About the Artist</h2>
+      <h2>O umělci</h2>
       <div class="bio-grid">
         <div class="bio-item">
-          <div class="bio-label muted">Born</div>
-          <div class="bio-value">September 14, 1936, Český Těšín</div>
+          <div class="bio-label muted">Datum narození</div>
+          <div class="bio-value">14. 9. 1936, Český Těšín</div>
         </div>
         <div class="bio-item">
-          <div class="bio-label muted">Died</div>
-          <div class="bio-value">July 7, 2025, Český Těšín</div>
+          <div class="bio-label muted">Datum úmrtí</div>
+          <div class="bio-value">† 7. 7. 2025, Český Těšín</div>
         </div>
         <div class="bio-item">
-          <div class="bio-label muted">Field</div>
-          <div class="bio-value">Visual Artist, Painter</div>
+          <div class="bio-label muted">Vymezení činnosti</div>
+          <div class="bio-value">Výtvarník, malíř</div>
         </div>
         <div class="bio-item">
-          <div class="bio-label muted">Location</div>
-          <div class="bio-value">Český Těšín, Czech Republic</div>
+          <div class="bio-label muted">Místo působení</div>
+          <div class="bio-value">Český Těšín</div>
         </div>
       </div>
     </section>
 
     <section class="about-section">
-      <h2>Life & Work</h2>
+      <h2>Život a tvorba</h2>
       <div class="text-content">
         <p>
-          Vladislav Raszyk was inspired and guided toward painting by his father Jindřich from childhood. 
-          Among the artist's most distinctive motifs was the landscape around the Beskydy Mountains. 
-          He also enjoyed painting floral still lifes and figural compositions. He engaged with variations 
-          on these themes throughout his entire creative career, utilizing painting techniques ranging from 
-          gouache to oil painting and acrylic.
+          Malíř Vladislav Raszyk byl k malbě inspirován a veden otcem Jindřichem od svého dětství. 
+          Mezi autorovy nejvýraznější motivy patřila krajina kolem pohoří Beskyd. S oblibou také 
+          maloval květinová zátiší a figurální kompozice. Variacemi na toto téma se zabýval po celou 
+          svoji tvorbu, využíval malířskou techniku od kvaše až po olejovou malbu a akryl.
         </p>
         <p>
-          His prestigious recognition for artistic excellence and creative invention was demonstrated, among 
-          other things, by his participation in the international exhibition "Bridge Between East and West" 
-          in Antwerp, Belgium in 1987. Seventy-five works by artists selected from across Europe were exhibited, 
-          including V. Raszyk's painting with a Beskydy theme, which was additionally featured on the 
-          representative poster for this project.
+          Prestižní ocenění, za uměleckou úroveň a tvůrčí invenci, se projevilo mimo jiné i účastí 
+          na mezinárodní výstavě pod názvem <em>Most mezi východem a západem</em> v Antwerpách (Belgie) 
+          v roce 1987. Vystaveno bylo 75 děl výtvarníků vybraných z celé Evropy, a společně s nimi obraz 
+          s beskydskou tématikou V. Raszyka, jenž byl navíc otisknut na reprezentační plakát tohoto projektu.
         </p>
         <p>
-          The painting traveled with the exhibition to England, the Netherlands, and other significant artistic 
-          centers in Europe, after which the work was purchased by a Belgian gallery for its collection.
+          Obraz putoval s výstavou dále do Anglie, Holandska a dalších významných uměleckých center Evropy, 
+          poté dílo zakoupila Belgická galerie pro svou sbírku.
         </p>
       </div>
     </section>
 
     <section class="about-section">
-      <h2>Exhibitions & Recognition</h2>
+      <h2>Výstavy a ocenění</h2>
       <div class="text-content">
         <p>
-          The artist's work has been presented in many European galleries: Krakow, Katowice, Warsaw, Frankfurt, 
-          Cologne, Augsburg, Prague galleries, and countless exhibitions in the region. Many works have found 
-          their way into private collections in the USA, Italy, Canada, Norway, Switzerland, France, and England.
+          Autorova tvorba byla představena v mnoha evropských galeriích: Krakově, Katovicích, Varšavě, 
+          Frankfurtu, Kolíně nad Rýnem, Augsburgu, v pražských galeriích, a na nesčetných výstavách v regionu. 
+          Mnohá díla putovala do soukromých sbírek v USA, Itálii, Kanadě, Norsku, Švýcarsku, ve Francii a Anglii.
         </p>
         <p class="highlight-box">
-          <strong>Award:</strong> Received the "Personality of the Year 2016" award from the city of Český Těšín 
-          for long-term contributions to culture.
+          <strong>Ocenění:</strong> Obdržel ocenění města Český Těšín <strong>Osobnost roku 2016</strong> 
+          za dlouholetý přínos v oblasti kultury.
         </p>
       </div>
     </section>
 
     <section class="about-section">
-      <h2>References</h2>
+      <h2>Literatura</h2>
       <div class="references">
         <ul class="reference-list">
           <li>
-            "Opustil nás významný občan, akademický malíř a výtvarný umělec Vladislav Raszyk." 
-            <em>Těšínské listy</em>, no. 8, August 25, 2025, p. 9
+            Opustil nás významný občan, akademický malíř a výtvarný umělec Vladislav Raszyk. 
+            In: <em>Těšínské listy</em>, č. 8, 25. 8. 2025, s. 9
           </li>
           <li>
-            Havlíková, D.: "Ocenění osobností města za rok 2016." 
-            <em>Těšínské listy</em>, no. 5, October 21, 2016, p. 11
+            Havlíková, D.: Ocenění osobností města za rok 2016. 
+            In: <em>Těšínské listy</em>, č. 5, 21. 10. 2016, s. 11
           </li>
           <li>
-            <em>Vladislav Raszyk Obrazy.</em> Exhibition catalog, Těšínské divadlo, 
-            Bílá galerie - September 2006
+            Vladislav Raszyk Obrazy. In: Katalog Těšínského divadla k výstavě autora v Bílé galerii 
+            Těšínského divadla - září 2006
           </li>
         </ul>
       </div>
@@ -93,8 +97,8 @@
   </div>
 
   <div class="actions" style="margin-top: 40px;">
-    <a href="/gallery" class="btn btn-primary">View Gallery</a>
-    <a href="/stats" class="btn btn-secondary">Statistics</a>
+    <a href="/gallery" class="btn btn-primary">Zobrazit galerii</a>
+    <a href="/stats" class="btn btn-secondary">Statistiky</a>
   </div>
 </div>
 {% endblock %}

@@ -982,3 +982,36 @@ select:focus-visible {
     padding: 20px;
   }
 }
+
+/* Artist Portrait */
+.artist-portrait {
+  max-width: 400px;
+  margin: 32px auto;
+  text-align: center;
+}
+
+.portrait-image {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 3px solid rgba(110, 231, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  margin-bottom: 12px;
+}
+
+.portrait-caption {
+  font-size: 14px;
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .artist-portrait {
+    max-width: 100%;
+  }
+  
+  .portrait-image {
+    max-width: 250px;
+  }
+}
