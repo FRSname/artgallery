@@ -284,6 +284,14 @@ def stats_page(request: Request):
     })
 
 
+@app.get("/about")
+def about_page(request: Request):
+    """
+    About page for the artist.
+    """
+    return templates.TemplateResponse("about.html", {"request": request})
+
+
 @app.get("/health")
 def health_check():
     """
