@@ -1,31 +1,215 @@
 {% extends "base.html" %}
-{% block title %}Gallery{% endblock %}
+{% block title %}Gallery - Browse Artworks{% endblock %}
+{% block description %}Browse {{ artworks|length }} artworks in our collection{% endblock %}
+
 {% block content %}
-<h1>Gallery</h1>
-<form method="get" class="search">
-  <div><label>Query</label>
-    <input name="q" value="{{ filters.q }}" placeholder="ID (A0001), title, keywords"></div>
-  <div><label>Year from</label><input name="year_from" value="{{ filters.year_from }}"></div>
-  <div><label>Year to</label><input name="year_to" value="{{ filters.year_to }}"></div>
-  <button class="btn" type="submit">Search</button>
-  <a class="btn secondary" href="/gallery">Reset</a>
-</form>
-<div class="grid">
-  {% for a in artworks %}
-  <a class="card" href="/gallery/{{ a.artwork_id }}">
-    {% if a.primary_image %}
-      <img class="thumb" src="/media/{{ a.primary_image.replace('/media/','') }}" alt="{{ a.title }}">
-    {% else %}
-      <div class="thumb" style="display:grid;place-items:center;color:#3d4a5f">No image</div>
-    {% endif %}
-    <div class="card-body">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-        <strong>{{ a.title }}</strong><span class="muted small">({{ a.artwork_id }})</span>
-        {% if a.year %}<span class="badge">{{ a.year }}</span>{% endif %}
-      </div>
-      <div class="muted">{{ a.medium }}</div>
+<div class="page-header">
+  <h1>Gallery</h1>
+  <p class="subtitle muted">Discover {{ artworks|length }} unique artworks</p>
+</div>
+
+<!-- Enhanced Search/Filter Section -->
+<form method="get" class="search-form">
+  <div class="search-grid">
+    <div class="form-group">
+      <label for="q">Search</label>
+      <input 
+        id="q"
+        name="q" 
+        value="{{ filters.q }}" 
+        placeholder="Search by title, ID, keywords..."
+        class="search-input"
+      >
     </div>
-  </a>
+    
+    <div class="form-group">
+      <label for="year_from">Year From</label>
+      <input 
+        id="year_from"
+        name="year_from" 
+        value="{{ filters.year_from }}"
+        type="number"
+        placeholder="e.g., 2020"
+        class="search-input"
+      >
+    </div>
+    
+    <div class="form-group">
+      <label for="year_to">Year To</label>
+      <input 
+        id="year_to"
+        name="year_to" 
+        value="{{ filters.year_to }}"
+        type="number"
+        placeholder="e.g., 2025"
+        class="search-input"
+      >
+    </div>
+
+    {% if mediums %}
+    <div class="form-group">
+      <label for="medium">Medium</label>
+      <select id="medium" name="medium" class="search-input">
+        <option value="">All Mediums</option>
+        {% for m in mediums %}
+        <option value="{{ m }}" {% if filters.medium == m %}selected{% endif %}>{{ m }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% endif %}
+  </div>
+  
+  <div class="search-actions">
+    <button class="btn btn-primary" type="submit">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="m13 13 4 4"/></svg>
+      Search
+    </button>
+    <a class="btn btn-secondary" href="/gallery">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Reset
+    </a>
+  </div>
+</form>
+
+<!-- Results count -->
+{% if filters.q or filters.year_from or filters.year_to or filters.medium %}
+<div class="results-info">
+  <p class="muted">Found {{ artworks|length }} result(s)</p>
+</div>
+{% endif %}
+
+<!-- Gallery Grid with Loading States -->
+{% if artworks %}
+<div class="grid" id="gallery-grid">
+  {% for a in artworks %}
+  <article class="card" data-artwork-id="{{ a.artwork_id }}">
+    <a href="/gallery/{{ a.artwork_id }}" class="card-link">
+      {% if a.primary_image %}
+        <img 
+          class="thumb lazy-load" 
+          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3C/svg%3E"
+          data-src="/media/{{ a.primary_image.replace('/media/','') }}" 
+          alt="{{ a.title }}"
+          loading="lazy"
+        >
+      {% else %}
+        <div class="thumb thumb-placeholder">
+          <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="6" y="6" width="36" height="36" rx="2"/>
+            <circle cx="16" cy="16" r="3"/>
+            <path d="m6 36 12-12 8 8 12-12"/>
+          </svg>
+          <span class="muted small">No image</span>
+        </div>
+      {% endif %}
+      
+      <div class="card-body">
+        <div class="card-header">
+          <strong class="card-title">{{ a.title }}</strong>
+          <span class="card-id muted small">({{ a.artwork_id }})</span>
+        </div>
+        
+        <div class="card-meta">
+          {% if a.year %}
+          <span class="badge">{{ a.year }}</span>
+          {% endif %}
+          {% if a.medium %}
+          <span class="muted small">{{ a.medium }}</span>
+          {% endif %}
+        </div>
+      </div>
+    </a>
+  </article>
   {% endfor %}
 </div>
+
+<!-- Pagination (if implemented in backend) -->
+
+<!-- Debug pagination data -->
+<pre style="background: #1a1a1a; padding: 10px; margin: 20px 0; color: #fff;">
+Pagination debug:
+- Total items: {{ pagination.total_items if pagination else 'NONE' }}
+- Total pages: {{ pagination.total_pages if pagination else 'NONE' }}
+- Current page: {{ pagination.page if pagination else 'NONE' }}
+- Has prev: {{ pagination.has_prev if pagination else 'NONE' }}
+- Has next: {{ pagination.has_next if pagination else 'NONE' }}
+</pre>
+
+{% if artworks and pagination.total_items > 0 %}
+<nav class="pagination" aria-label="Pagination">
+  <div class="pagination-info muted">
+    Showing {{ ((pagination.page - 1) * pagination.per_page) + 1 }} - {{ [pagination.page * pagination.per_page, pagination.total_items]|min }} of {{ pagination.total_items }} artworks
+  </div>
+  
+  {% if pagination.total_pages > 1 %}
+  <div class="pagination-controls">
+    {% if pagination.has_prev %}
+    <a href="?page={{ pagination.page - 1 }}{% if filters.q %}&q={{ filters.q }}{% endif %}{% if filters.year_from %}&year_from={{ filters.year_from }}{% endif %}{% if filters.year_to %}&year_to={{ filters.year_to }}{% endif %}{% if filters.medium %}&medium={{ filters.medium }}{% endif %}" class="btn btn-secondary">
+      ← Previous
+    </a>
+    {% endif %}
+    
+    <span class="muted">Page {{ pagination.page }} of {{ pagination.total_pages }}</span>
+    
+    {% if pagination.has_next %}
+    <a href="?page={{ pagination.page + 1 }}{% if filters.q %}&q={{ filters.q }}{% endif %}{% if filters.year_from %}&year_from={{ filters.year_from }}{% endif %}{% if filters.year_to %}&year_to={{ filters.year_to }}{% endif %}{% if filters.medium %}&medium={{ filters.medium }}{% endif %}" class="btn btn-secondary">
+      Next →
+    </a>
+    {% endif %}
+  </div>
+  {% endif %}
+</nav>
+{% endif %}
+
+{% else %}
+<div class="empty-state">
+  <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
+    <circle cx="32" cy="32" r="28"/>
+    <path d="M32 20v16m0 4v.01"/>
+  </svg>
+  <h2>No artworks found</h2>
+  <p class="muted">Try adjusting your search filters</p>
+  <a href="/gallery" class="btn btn-primary">View All Artworks</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Lazy load images
+document.addEventListener('DOMContentLoaded', function() {
+  const lazyImages = document.querySelectorAll('.lazy-load');
+  
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          img.classList.remove('lazy-load');
+          imageObserver.unobserve(img);
+        }
+      });
+    });
+    
+    lazyImages.forEach(img => imageObserver.observe(img));
+  } else {
+    // Fallback for older browsers
+    lazyImages.forEach(img => {
+      img.src = img.dataset.src;
+    });
+  }
+});
+
+// Add smooth hover animations
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('mouseenter', function() {
+    this.style.transform = 'translateY(-4px)';
+  });
+  
+  card.addEventListener('mouseleave', function() {
+    this.style.transform = 'translateY(0)';
+  });
+});
+</script>
 {% endblock %}

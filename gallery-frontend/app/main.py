@@ -53,10 +53,12 @@ def _get(path: str):
         raise HTTPException(status_code=503, detail=f"Backend service unavailable: {str(e)}")
 
 
+from fastapi.responses import RedirectResponse
+
 @app.get("/")
 def root():
-    """Health check endpoint"""
-    return {"status": "ok", "app": "Public Gallery", "version": "1.0"}
+    """Redirect root to gallery"""
+    return RedirectResponse(url="/gallery", status_code=302)
 
 
 @app.get("/gallery")
