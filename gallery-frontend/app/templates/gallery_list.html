@@ -125,16 +125,6 @@
 
 <!-- Pagination (if implemented in backend) -->
 
-<!-- Debug pagination data -->
-<pre style="background: #1a1a1a; padding: 10px; margin: 20px 0; color: #fff;">
-Pagination debug:
-- Total items: {{ pagination.total_items if pagination else 'NONE' }}
-- Total pages: {{ pagination.total_pages if pagination else 'NONE' }}
-- Current page: {{ pagination.page if pagination else 'NONE' }}
-- Has prev: {{ pagination.has_prev if pagination else 'NONE' }}
-- Has next: {{ pagination.has_next if pagination else 'NONE' }}
-</pre>
-
 {% if artworks and pagination.total_items > 0 %}
 <nav class="pagination" aria-label="Pagination">
   <div class="pagination-info muted">

@@ -65,8 +65,8 @@ def root():
 def gallery_index(
     request: Request,
     q: Optional[str] = None,
-    year_from: Optional[int] = None,
-    year_to: Optional[int] = None,
+    year_from: Optional[str] = None,  # accept strings from form inputs
+    year_to: Optional[str] = None,    # accept strings from form inputs
     medium: Optional[str] = None,
     page: int = 1,
     per_page: int = 24,
@@ -91,25 +91,40 @@ def gallery_index(
                 return ql in haystack
             items = [a for a in items if matches_query(a)]
 
+    # Convert year_from/to (strings) to ints only if provided and valid
+    year_from_int = None
+    if year_from and isinstance(year_from, str) and year_from.strip():
+        try:
+            year_from_int = int(year_from)
+        except ValueError:
+            year_from_int = None
+
+    year_to_int = None
+    if year_to and isinstance(year_to, str) and year_to.strip():
+        try:
+            year_to_int = int(year_to)
+        except ValueError:
+            year_to_int = None
+
     # Year filters with safe int conversion
-    if year_from is not None:
+    if year_from_int is not None:
         def year_gte(a):
             year = a.get('year')
             if not year:
                 return False
             try:
-                return int(year) >= year_from
+                return int(year) >= year_from_int
             except (ValueError, TypeError):
                 return False
         items = [a for a in items if year_gte(a)]
 
-    if year_to is not None:
+    if year_to_int is not None:
         def year_lte(a):
             year = a.get('year')
             if not year:
                 return False
             try:
-                return int(year) <= year_to
+                return int(year) <= year_to_int
             except (ValueError, TypeError):
                 return False
         items = [a for a in items if year_lte(a)]
@@ -152,8 +167,8 @@ def gallery_index(
         },
         'filters': {
             'q': q or '',
-            'year_from': year_from if year_from is not None else '',
-            'year_to': year_to if year_to is not None else '',
+            'year_from': year_from or '',  # keep original string for form
+            'year_to': year_to or '',      # keep original string for form
             'medium': medium or ''
         }
     })
