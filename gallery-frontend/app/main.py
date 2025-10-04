@@ -238,25 +238,27 @@ def stats():
     """
     Statistics endpoint showing artwork distribution.
     """
+    # keep for backwards compatibility, delegate to helper
+    return _compute_stats()
+
+
+def _compute_stats():
     items = _get("/api/artworks") or []
-    
     mediums = {}
     years = {}
-    
+
     for item in items:
-        # Count by medium
         medium = item.get('medium')
         if medium:
             medium = medium.strip()
             mediums[medium] = mediums.get(medium, 0) + 1
         else:
             mediums['Unknown'] = mediums.get('Unknown', 0) + 1
-        
-        # Count by year
+
         year = item.get('year')
         if year:
             try:
-                year = str(int(year))  # Normalize year format
+                year = str(int(year))
                 years[year] = years.get(year, 0) + 1
             except (ValueError, TypeError):
                 years['Unknown'] = years.get('Unknown', 0) + 1
@@ -268,6 +270,18 @@ def stats():
         "by_medium": dict(sorted(mediums.items())),
         "by_year": dict(sorted(years.items(), reverse=True))
     }
+
+
+@app.get("/stats")
+def stats_page(request: Request):
+    """
+    Statistics page showing artwork distribution.
+    """
+    stats_data = _compute_stats()
+    return templates.TemplateResponse("stats.html", {
+        "request": request,
+        "stats": stats_data
+    })
 
 
 @app.get("/health")

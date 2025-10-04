@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Gallery Statistics{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Gallery Statistics</h1>
+  <p class="subtitle muted">Overview of our collection</p>
+</div>
+
+<div class="stats-grid">
+  <!-- Total Artworks Card -->
+  <div class="stat-card stat-card-highlight">
+    <div class="stat-icon">
+      <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="6" y="6" width="36" height="36" rx="2"/>
+        <circle cx="18" cy="18" r="3"/>
+        <path d="m6 36 12-12 8 8 12-12"/>
+      </svg>
+    </div>
+    <div class="stat-value">{{ stats.total_artworks }}</div>
+    <div class="stat-label">Total Artworks</div>
+  </div>
+
+  <!-- By Medium -->
+  <div class="stat-card">
+    <h2>By Medium</h2>
+    <div class="stat-list">
+      {% for medium, count in stats.by_medium.items() %}
+      <div class="stat-row">
+        <span class="stat-row-label">{{ medium }}</span>
+        <span class="stat-row-value">
+          <span class="badge">{{ count }}</span>
+          <span class="muted small">{{ "%.1f"|format((count / stats.total_artworks * 100)) }}%</span>
+        </span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- By Year -->
+  <div class="stat-card">
+    <h2>By Year</h2>
+    <div class="stat-list">
+      {% for year, count in stats.by_year.items() %}
+      <div class="stat-row">
+        <span class="stat-row-label">{{ year }}</span>
+        <span class="stat-row-value">
+          <span class="badge">{{ count }}</span>
+          <span class="muted small">{{ "%.1f"|format((count / stats.total_artworks * 100)) }}%</span>
+        </span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="actions" style="margin-top: 32px;">
+  <a href="/gallery" class="btn btn-primary">Browse Gallery</a>
+  <a href="/api/stats" class="btn btn-secondary">View Raw JSON</a>
+</div>
+{% endblock %}
