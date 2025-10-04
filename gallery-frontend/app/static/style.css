@@ -993,17 +993,30 @@ select:focus-visible {
 .portrait-image {
   width: 100%;
   max-width: 300px;
+  height: auto;
+  display: block;
+  margin: 0 auto 12px;
   aspect-ratio: 3/4;
   object-fit: cover;
   border-radius: var(--radius);
   border: 3px solid rgba(110, 231, 255, 0.3);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  margin-bottom: 12px;
 }
 
 .portrait-caption {
   font-size: 14px;
   font-style: italic;
+}
+
+.portrait-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px;
+  background: var(--panel);
+  border-radius: var(--radius);
+  color: var(--muted);
 }
 
 @media (max-width: 600px) {

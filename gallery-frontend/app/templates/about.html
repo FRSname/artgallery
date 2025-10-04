@@ -11,7 +11,20 @@
 
   <!-- Artist Portrait -->
   <div class="artist-portrait">
-    <img src="/static/portrait.jpg" alt="Vladislav Raszyk" class="portrait-image">
+    <img 
+      src="/static/portrait.jpeg" 
+      alt="Vladislav Raszyk" 
+      class="portrait-image"
+      onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+    >
+    <div class="portrait-placeholder" style="display: none;">
+      <svg width="120" height="160" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="10" y="10" width="100" height="140" rx="8"/>
+        <circle cx="60" cy="60" r="20"/>
+        <path d="M30 120 Q60 100 90 120"/>
+      </svg>
+      <p class="muted small">Portrait unavailable</p>
+    </div>
     <p class="portrait-caption muted">Akademický malíř Vladislav Raszyk</p>
   </div>
 
